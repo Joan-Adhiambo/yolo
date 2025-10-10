@@ -102,8 +102,9 @@ Add custom nginx.conf in client, this is to ensure routing works and static file
 Configure Docker Compose file
 Tagging of images
 Docker image tags aligned with Git tags: v1.0.0, v2.0.0.
-- yolo-frontend:v1.0.0
-- yolo-backend:v2.0.0
+- yolo-frontend   v1.0.0     54.8MB
+- yolo-backend    v2.0.0     147MB
+- mvertes/alpine-mongo       123MB
 
 
 # Images pushed on Dockerhub
