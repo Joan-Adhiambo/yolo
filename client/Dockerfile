@@ -19,7 +19,7 @@ RUN npm run build
 #Use nginx to serve the build app
 FROM nginx:alpine
 
-#Copy the built app from the previous stage
+#Copy the built app from the node build stage
 COPY --from=build /app/build /usr/share/nginx/html
 
 #Copy custom nginx configuration
