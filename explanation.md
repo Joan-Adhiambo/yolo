@@ -1,15 +1,14 @@
-1. Dockerfile Implementation
 # Choice of Image
 
 Each container, I carefully selected the base image to optimize performance and image size:
 
-# Backend:-
+# Backend
 I used node:14-alpine AS build
 
 Reasons: 
 The Alpine variant is lightweight, reducing the image size, and Node.js 14 is stable and compatible with the application dependencies.
 
-# Frontend:-
+# Frontend
 I used node:14-alpine AS build on the first stage
 Used nginx:alpine on the second stage
 
@@ -18,14 +17,14 @@ Node 14-alpine is a lightweight Node.js image based on Alpine Linux, which keeps
 It is a stable version for most React or Node.js applications.
 Using AS build sets up a multi-stage build, this helped to reduces the final image size.
 
-# Database (MongoDB):-
+# Database (MongoDB)
 I used mvertes/alpine-mongo:latest
 
 Reasons:
 It is suitable for test and suitable for final smaller images due to it's lightweight.
 Improves build times and reduce resource usage.
 
-2. Dockerfile Directive
+# Dockerfile Directive
 # backend container
 
 FROM node:14-alpine AS build
@@ -75,7 +74,7 @@ Multi-stage build:
 - EXPOSE 27017: Documents MongoDB port for internal networking.
 
 
-3. Docker-compose networking.
+# Docker-compose networking.
 networks:
   back-network:
     driver: bridge
@@ -87,11 +86,11 @@ networks:
 - The backend container communicates with database via back-network and frontend container via client-network
 - Frontend communites with client-network only.
 
-4. Docker compose volume
+# Docker compose volume
 - Explanation.
 - volumes: since the DB is cloud hosted, it was not necessary to persist data locally, this is because data is already persisted remotely.
 
-5. Git Workflow
+# Git Workflow
 # Branching
 - master branch
 
@@ -107,6 +106,6 @@ Docker image tags aligned with Git tags: v1.0.0, v2.0.0.
 - yolo-backend:v2.0.0
 
 
-6. Images pushed on Dockerhub
+# Images pushed on Dockerhub
 
 ![alt text](<Screenshot from 2025-10-11 00-24-41-2.png>)
