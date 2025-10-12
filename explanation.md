@@ -25,6 +25,8 @@ It is suitable for test and suitable for final smaller images due to it's lightw
 Improves build times and reduce resource usage.
 
 # Dockerfile Directive
+- Explains key lines in a Dockerfile that builds  the containers for each micro-service,.
+
 # backend container
 
 FROM node:14-alpine AS build
@@ -44,8 +46,8 @@ CMD ["node", "server.js"]
 - CMD ["node", "server.js"]: Runs the backend server when the container starts.
 
 # frontend container
-# Stage 1: Build
 
+# Stage 1: Build
 FROM node:14-alpine AS build
 WORKDIR /app
 COPY package*.json ./
@@ -56,13 +58,28 @@ RUN npm run build
 # Stage 2
 FROM nginx:alpine
 COPY --from=build /app/build /usr/share/nginx/html
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 EXPOSE 3000
 CMD ["nginx", "-g", "daemon off;"]
 
 Multi-stage build:
 - Stage 1 (Node.js): Build the app, its dependencies and build tools
 - Stage 2 (Nginx): Serves the static build files, producing a smaller image.
-- COPY --from=build: Transfers build files from the first stage to Nginx container.
+
+## COPY --from=build /app/build /usr/share/nginx/html: 
+- This line copies the application built from the first build stage (the Node.js stage) into the Nginx image
+
+## Breakdown
+- from=build: Transfers build files from the first stage defined as FROM node:14-alpine AS build to Nginxcontainer.
+- /app/build: Source path inside the Node.js container.
+- /usr/share/nginx/html: Destination path in the Nginx container. This is the default directory that Nginx uses to serve files.
+
+## COPY nginx.conf /etc/nginx/conf.d/default.conf: 
+- Replaces the default Nginx configuration file with a custom one, nginx.conf.
+## Breakdown
+- nginx.conf: Your custom Nginx configuration file, stored locally.
+- /etc/nginx/conf.d/default.conf: The location of Nginx's default site configuration file inside the container.
+
 - EXPOSE 3000: port for serving the frontend.
 - CMD ["nginx", "-g", "daemon off;"]: Starts Nginx in the foreground to keep the container running.
 
@@ -95,16 +112,16 @@ networks:
 - master branch
 
 # Descriptive Commits
-Add Dockerfile for backend container.
-Add Dockerfile for frontend container.
-Add .env file in backend.
-Add custom nginx.conf in client, this is to ensure routing works and static files are served (Redirecting all requests to index.html )
-Configure Docker Compose file
-Tagging of images
-Docker image tags aligned with Git tags: v1.0.0, v2.0.0.
-- yolo-frontend   v1.0.0     54.8MB
-- yolo-backend    v2.0.0     147MB
-- mvertes/alpine-mongo       123MB
+- Add Dockerfile for backend container.
+- Add Dockerfile for frontend container.
+- Add .env file in backend.
+- Add custom nginx.conf in client, this is to ensure routing works and static files are served (Redirecting all requests to index.html )
+- Configure Docker Compose file
+- Tagging of images
+- Docker image tags aligned with Git tags: v1.0.0, v2.0.0.
+    * yolo-frontend   v1.0.0     54.8MB
+    * yolo-backend    v2.0.0     147MB
+    * mvertes/alpine-mongo       123MB
 
 
 # Images pushed on Dockerhub
