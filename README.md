@@ -31,8 +31,8 @@ yolo/
 |   ├── nginx.conf              
 |   ├── package.json  
 |   |
-├── docker-compose.yaml
-|-- explanation.md         
+docker-compose.yaml
+---explanation.md         
 └── README.md             
 
 # Installation
