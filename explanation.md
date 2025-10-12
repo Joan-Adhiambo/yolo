@@ -72,7 +72,7 @@ Multi-stage build:
 ## Breakdown
 - from=build: Transfers build files from the first stage defined as FROM node:14-alpine AS build to Nginxcontainer.
 - /app/build: Source path inside the Node.js container.
-- /usr/share/nginx/html: Destination path in the Nginx container. This is the default directory that Nginx uses to serve files.
+- /usr/share/nginx/html: Destination path in the Nginx container. This is the default directory that Nginx use to serve files.
 
 ## COPY nginx.conf /etc/nginx/conf.d/default.conf: 
 - Replaces the default Nginx configuration file with a custom one, nginx.conf.
@@ -123,6 +123,7 @@ networks:
     * yolo-frontend   v1.0.0     54.8MB
     * yolo-backend    v2.0.0     147MB
     * mvertes/alpine-mongo       123MB
+  
 
 
 # Images pushed on Dockerhub
