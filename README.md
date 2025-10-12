@@ -1,6 +1,7 @@
 # Yolo - E-Commerce Backend with Node.js, Express, and MongoDB
 
-This repository contains a backend application configured to run with Docker and orchestrated using Docker Compose. This README breaks down the steps needed to configure Dockerfiles, run containers, and manage them using Docker Compose.
+This repository contains a backend application configured to run with Docker and orchestrated using Docker Compose. 
+This README breaks down the steps taken to configure Dockerfiles, run containers, and manage them using Docker Compose.
 
 # Project Overview
 
@@ -165,7 +166,6 @@ services:
 
 networks:
   back-network:
-   driver: bridge
   client-network:
     driver: bridge
 
