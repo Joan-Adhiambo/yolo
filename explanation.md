@@ -2,13 +2,13 @@
 
 Each container, I carefully selected the base image to optimize performance and image size:
 
-# Backend
+## Backend
 I used node:14-alpine AS build
 
 Reasons: 
 The Alpine variant is lightweight, reducing the image size, and Node.js 14 is stable and compatible with the application dependencies.
 
-# Frontend
+## Frontend
 I used node:14-alpine AS build on the first stage
 Used nginx:alpine on the second stage
 
@@ -17,7 +17,7 @@ Node 14-alpine is a lightweight Node.js image based on Alpine Linux, which keeps
 It is a stable version for most React or Node.js applications.
 Using AS build sets up a multi-stage build, this helped to reduces the final image size.
 
-# Database (MongoDB)
+## Database (MongoDB)
 I used mvertes/alpine-mongo:latest
 
 Reasons:
@@ -25,9 +25,9 @@ It is suitable for test and suitable for final smaller images due to it's lightw
 Improves build times and reduce resource usage.
 
 # Dockerfile Directive
-- Explains key lines in a Dockerfile that builds  the containers for each micro-service,.
+- Explains key lines in a Dockerfile that builds  the containers for each micro-service.
 
-# backend container
+## backend container
 
 FROM node:14-alpine AS build
 WORKDIR /app
@@ -45,9 +45,9 @@ CMD ["node", "server.js"]
 - EXPOSE 5000: The port the app listens on.
 - CMD ["node", "server.js"]: Runs the backend server when the container starts.
 
-# frontend container
+## frontend container
 
-# Stage 1: Build
+## Stage 1: Build
 FROM node:14-alpine AS build
 WORKDIR /app
 COPY package*.json ./
@@ -55,7 +55,7 @@ RUN npm install
 COPY . .
 RUN npm run build
 
-# Stage 2
+## Stage 2
 FROM nginx:alpine
 COPY --from=build /app/build /usr/share/nginx/html
 COPY nginx.conf /etc/nginx/conf.d/default.conf
@@ -76,6 +76,7 @@ Multi-stage build:
 
 ## COPY nginx.conf /etc/nginx/conf.d/default.conf: 
 - Replaces the default Nginx configuration file with a custom one, nginx.conf.
+
 ## Breakdown
 - nginx.conf: Your custom Nginx configuration file, stored locally.
 - /etc/nginx/conf.d/default.conf: The location of Nginx's default site configuration file inside the container.
@@ -83,7 +84,7 @@ Multi-stage build:
 - EXPOSE 3000: port for serving the frontend.
 - CMD ["nginx", "-g", "daemon off;"]: Starts Nginx in the foreground to keep the container running.
 
-# Database container (MongoDB)
+## Database container (MongoDB)
 
 - Used mvertes/alpine-mongo:latest to build the container image.
 - No Dockerfile created because the image pulled already includes all necessary configuration for running MongoDB securely.
@@ -108,10 +109,10 @@ networks:
 - volumes: since the DB is cloud hosted, it was not necessary to persist data locally, this is because data is already persisted remotely.
 
 # Git Workflow
-# Branching
-- master branch
+  ## Branching
+ - master branch
 
-# Descriptive Commits
+## Descriptive Commits
 - Add Dockerfile for backend container.
 - Add Dockerfile for frontend container.
 - Add .env file in backend.
