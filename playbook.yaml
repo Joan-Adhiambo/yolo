@@ -4,7 +4,7 @@
   become: yes
   vars:
     repo_url: "https://github.com/Joan-Adhiambo/yolo.git"
-    app_dir: "app/yolo"
+    app_dir: "opt/yolo"
 
   roles:
     - system-setup
