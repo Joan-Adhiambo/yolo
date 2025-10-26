@@ -1,0 +1,12 @@
+
+- name: Deploy YOLO E-commerce app using roles
+  hosts: all
+  become: yes
+  vars:
+    repo_url: "https://github.com/Joan-Adhiambo/yolo.git"
+    app_dir: "app/yolo"
+
+  roles:
+    - system-setup
+    - clone-repo
+    - deploy
