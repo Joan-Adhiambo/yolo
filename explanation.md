@@ -1,3 +1,96 @@
+# Vagrant Implementation
+## Overview
+
+This section explains the Vagrant setup used to provision a virtual environment for the Ansible automation in the Configuration Management IP project. 
+The purpose is to create an isolated Ubuntu-based virtual machine that acts as the target node for configuration and deployment using Ansible.
+
+# Vagrant Configuration
+The base box used in this setup is:-
+ubuntu/jammy64
+
+## Reasons
+This is an official Ubuntu box maintained by HashiCorp, ensuring stability and reliability. 
+It provides a clean environment for installing dependencies and running the application.
+
+
+# Vagrantfile Structure
+Vagrant.configure("2") do |config|
+  
+  # Specify the base box
+  config.vm.box = "ubuntu/jammy64"
+  
+  # Define network settings
+  config.vm.network "forwarded_port", guest: 5000, host: 5000
+  config.vm.network "forwarded_port", guest: 3000, host: 3000
+  
+  # Provisioning using Ansible
+  config.vm.provision "ansible" do |ansible|
+    ansible.playbook = "playbook.yaml"
+    ansible.verbose = "v"
+  end
+end
+
+# Explanation
+
+- Base Box:-
+Defines the OS image (ubuntu/jammy64).
+
+- Network Configuration:-
+The forwarded port allows the web application to be accessed on localhost
+
+- Provisioner: -
+Uses Ansible to automatically configure the VM by running the playbook.yaml file after provisioning.
+
+# Provisioning Process
+
+Run the command:-
+vagrant up
+
+# Vagrant:
+
+- Downloads and initializes the Ubuntu box (if not already present).
+- Starts the virtual machine.
+- Automatically runs the Ansible playbook (playbook.yaml) defined in the provisioning section.
+- Sets up the required environment  ie installing Docker, cloning the GitHub repository, configuring roles
+- If any updates are made to the playbook or roles, the provisioning process can be re-run using:
+
+vagrant provision --reload
+
+# Accessing the Application
+
+- Once provisioning is successful:
+
+- The web application can be accessed via the browser at:
+http://localhost:5000 //backend
+http://localhost:3000  //frontend
+
+# The VM can be accessed  using:
+vagrant ssh
+
+# Linking Vagrant to Ansible
+
+- The Vagrantfile is configured to trigger Ansible automatically as part of the provisioning process. 
+- This ensures that once the virtual machine is up, Ansible takes over to configure the system using predefined roles and tasks.
+- Each role (system-setup, clone-repo, deploy) handles a specific part of the automation:
+
+# system-setup  Role
+- Sets up the required tools like Docker, Git, and Docker-compose
+
+# clone-repo Role
+- pulls the web application code from the GitHub repository:
+  https://github.com/Joan-Adhiambo/yolo.git
+
+# deploy Role
+- sets up and starts the application inside Docker containers.
+
+This modularization allows for a clean and configuration that is easy to manage.
+
+# Conclusion
+- The Vagrant configuration ensures an automated and portable development environment. 
+- It serves as the foundation for Ansible to perform further configuration tasks such as dependency installation, container setup, and application        deployment without manual intervention.
+
+
+
 # Choice of Image
 
 Each container, I carefully selected the base image to optimize performance and image size:
