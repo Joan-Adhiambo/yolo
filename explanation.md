@@ -44,7 +44,7 @@ Uses Ansible to automatically configure the VM by running the playbook.yaml file
 # Provisioning Process
 
 Run the command:-
-vagrant up
+vagrant provision
 
 # Vagrant:
 
@@ -88,6 +88,9 @@ This modularization allows for a clean and configuration that is easy to manage.
 # Conclusion
 - The Vagrant configuration ensures an automated and portable development environment. 
 - It serves as the foundation for Ansible to perform further configuration tasks such as dependency installation, container setup, and application        deployment without manual intervention.
+
+
+
 
 
 
