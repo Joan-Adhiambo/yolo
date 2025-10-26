@@ -76,15 +76,17 @@ Vagrant.configure("2") do |config|
   # SHELL
 
 Vagrant.configure("2") do |config|
+  config.vm.box = "ubuntu/jammy64"
 
-  # Forward app ports
-  config.vm.network "forwarded_port", guest: 3000, host: 8080
+  config.vm.network "forwarded_port", guest: 3000, host: 3000
   config.vm.network "forwarded_port", guest: 5000, host: 5000
-
-  # Run Ansible playbook for provisioning
+  config.vm.network "forwarded_port", guest: 8000, host: 8000
+end
   config.vm.provision "ansible" do |ansible|
     ansible.playbook = "playbook.yaml"
-    ansible.verbose = "vvv"
   end
 end
+
+
+
 
