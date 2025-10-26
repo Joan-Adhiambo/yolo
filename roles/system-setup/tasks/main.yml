@@ -1,0 +1,18 @@
+#SPDX-License-Identifier: MIT-0
+---
+# tasks file for system-setup
+
+- name: Update apt and install Git & Docker
+  apt:
+    name:
+      - git
+      - docker.io
+      - docker-compose
+    state: present
+    update_cache: yes
+
+- name: Ensure Docker service is running
+  service:
+    name: docker
+    state: started
+    enabled: yes

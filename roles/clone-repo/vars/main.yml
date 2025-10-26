@@ -1,0 +1,7 @@
+#SPDX-License-Identifier: MIT-0
+---
+# vars file for clone-repo
+
+vars:
+    repo_url: "https://github.com/Joan-Adhiambo/yolo.git"  # GitHub repo to clone
+    app_dir: "app/yolo"  # app directory in VM

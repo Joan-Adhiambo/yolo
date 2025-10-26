@@ -1,0 +1,8 @@
+#SPDX-License-Identifier: MIT-0
+---
+# tasks file for deploy
+
+- name: Run YOLO app with Docker Compose
+  command: docker-compose up -d
+  args:
+    chdir: "{{ app_dir }}"
