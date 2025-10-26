@@ -5,14 +5,14 @@
 # configures the configuration version (we support older styles for
 # backwards compatibility). Please don't change it unless you know what
 # you're doing.
-Vagrant.configure("2") do |config|
+#Vagrant.configure("2") do |config|
   # The most common configuration options are documented and commented below.
   # For a complete reference, please see the online documentation at
   # https://docs.vagrantup.com.
 
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://vagrantcloud.com/search.
-  config.vm.box = "ubuntu/jammy64"
+  #config.vm.box = "ubuntu/jammy64"
 
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
@@ -74,21 +74,21 @@ Vagrant.configure("2") do |config|
   #   apt-get update
   #   apt-get install -y apache2
   # SHELL
+
  Vagrant.configure("2") do |config|
+
+  # Specify the base box (required)
+  config.vm.box = "ubuntu/jammy64"
+
 
   # Network configuration - port forwarding
   config.vm.network "forwarded_port", guest: 3000, host: 3000
   config.vm.network "forwarded_port", guest: 5000, host: 5000
-
- end
+  
   # Provision using Ansible
   config.vm.provision "ansible" do |ansible|
     ansible.playbook = "playbook.yaml"
     ansible.verbose = "vvv"
   end
+
 end
-
-
-
-
-
