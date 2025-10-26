@@ -74,4 +74,16 @@ Vagrant.configure("2") do |config|
   #   apt-get update
   #   apt-get install -y apache2
   # SHELL
+
+Vagrant.configure("2") do |config|
+
+  #
+  # Run Ansible from the Vagrant Host
+  #
+  config.vm.provision "ansible" do |ansible|
+    ansible.playbook = "playbook.yaml"
+    ansible.verbose = "vvv"
+  end
+
+end
 end
