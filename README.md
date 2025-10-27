@@ -19,7 +19,7 @@ project-root/
 │   ├── deploy/
 │   │   ├── tasks/main.yml
 │
-|---> hosts   |
+|---> hosts   
 ├── explanation.md
 └── README.md
 
