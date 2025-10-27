@@ -57,7 +57,7 @@ invetory = hosts
 roles_path = ./roles
 
 # Ansible Roles
-1. system-setup
+## system-setup
 
 - Purpose: Prepares the server with all necessary dependencies and environment setup.
 Tasks:
@@ -84,7 +84,7 @@ task:
     state: started
     enabled: yes
 
-2. clone-repo
+## clone-repo
 
 - Purpose: Clones the project source code from GitHub into the virtual machine.
 - Key Tasks:
@@ -103,7 +103,7 @@ task:-
     force: yes
     
 
-3. deploy
+## deploy
 - Purpose: Handles running the application using Docker.
 - Key Tasks:
 
