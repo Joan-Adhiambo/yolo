@@ -18,7 +18,8 @@ project-root/
 |   |   |--- vars/main.yml
 │   ├── deploy/
 │   │   ├── tasks/main.yml
-│   |
+│
+|---> hosts   |
 ├── explanation.md
 └── README.md
 
