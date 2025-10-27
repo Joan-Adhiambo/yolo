@@ -1,3 +1,165 @@
+# Configuration Management I– Ansible Automation
+
+This project implements infrastructure automation using Vagrant and Ansible.
+Vagrant provisions a virtual machine running Ubuntu, while Ansible automates configuration and deployment of the application.
+
+The application runs on Node.js, uses MongoDB (hosted in the cloud), and is containerized with Docker for consistency.
+
+# Project Structure
+project-root/
+├── Vagrantfile
+├── playbook.yaml
+├── roles/
+│   ├── system-setup/
+│   │   ├── tasks/main.yml
+│   │   |
+│   ├── clone-repo/
+│   │   ├── tasks/main.yml
+|   |   |--- vars/main.yml
+│   ├── deploy/
+│   │   ├── tasks/main.yml
+│   |
+├── explanation.md
+└── README.md
+
+# Vagrant Setup
+
+The Vagrantfile provisions an Ubuntu VM and runs the playbook.yaml automatically during provisioning.
+Ports are forwarded to allow access to the web application on:
+
+http://localhost:5000
+http://localhost:3000
+
+
+- The Virtual machine can be accessed using the command:-
+
+vagrant ssh
+
+- To check the containers running run the command:-
+ sudo docker ps
+
+
+# Ansible Playbook Overview
+
+The playbook.yaml orchestrates the execution of all defined roles in order.
+It defines:-
+
+- Variables for configurations and file paths
+- Roles(system setup, cloning, deployment)
+- Tags
+
+# Ancible structure:
+
+[defaults]
+remote_user =vagrant
+private_key_file = /home/user/assignment/yolo/.vagrant/machines/default/virtualbox/private_key
+invetory = hosts
+roles_path = ./roles
+
+# Ansible Roles
+1. system-setup
+
+- Purpose: Prepares the server with all necessary dependencies and environment setup.
+Tasks:
+
+- Update and upgrade Ubuntu packages
+- Install Docker, Docker Compose, Git
+- Start and enable the Docker service
+
+- Tags: setup, dependencies
+
+task:
+- name: Update apt and install Git & Docker
+  apt:
+    name:
+      - git
+      - docker.io
+      - docker-compose
+    state: present
+    update_cache: yes
+
+- name: Ensure Docker service is running
+  service:
+    name: docker
+    state: started
+    enabled: yes
+
+2. clone-repo
+
+- Purpose: Clones the project source code from GitHub into the virtual machine.
+- Key Tasks:
+
+- Ensure Git is installed
+- Clone the repository from GitHub into /opt/yolo
+- Ensures successful cloning
+
+- Tags: clone, repo
+
+task:-
+- name: Clone YOLO repository
+  git:
+    repo: "{{ repo_url }}"
+    dest: "{{ app_dir }}"
+    force: yes
+    
+
+3. deploy
+- Purpose: Handles running the application using Docker.
+- Key Tasks:
+
+- Copy Docker configuration files
+- Build Docker images
+- Start containers for backend and frontend services
+- Ensure application runs on port 5000 and port 3000
+
+- Tags: deploy, docker
+
+task:-
+-  name: Run YOLO app with Docker Compose
+  command: docker-compose up -d
+  args:
+    chdir: "{{ app_dir }}"
+
+# Running the Project
+Step 1: Start the VM
+vagrant up
+
+Step 2: Provision  
+vagrant provision
+
+Step 3: Access the App
+
+Once deployment completes successfully:
+
+http://localhost:5000
+http://localhost:3000
+
+Step 4: SSH into VM for verification
+vagrant ssh
+
+Testing Functionality
+
+Visit the running application in your browser.
+
+Use the “Add Product” form to confirm that the product addition feature works, this validates backend–frontend–database connectivity
+
+**********************************************************************************************************************************************************************
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # Yolo - E-Commerce Backend with Node.js, Express, and MongoDB
 
 This repository contains a backend application configured to run with Docker and orchestrated using Docker Compose. 
