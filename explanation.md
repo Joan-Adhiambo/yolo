@@ -114,6 +114,12 @@ Key Tasks:
     dest: "{{ app_dir }}"
     force: yes
 
+- Variables (configured variables):-
+ vars:
+  repo_url: "https://github.com/Joan-Adhiambo/yolo.git"  # GitHub repo to clone
+  app_dir: "app/yolo"                                   # app directory in VM
+
+
 Key tasks:
 - Ensure Git is installed
 - Clone the repository from the  GitHub URL into the /opt/yolo directory.
