@@ -5,7 +5,7 @@ This section explains the Vagrant setup used to provision a virtual environment 
 The purpose is to create an isolated Ubuntu-based virtual machine that acts as the target node for configuration and deployment using Ansible.
 
 # Vagrant Configuration
-The base box used in this setup is:-
+I used base box used in this setup is:-
 ubuntu/jammy64
 
 ## Reasons
@@ -32,13 +32,13 @@ end
 
 # Explanation
 
-- Base Box:-
+- specify the base box:-
 Defines the OS image (ubuntu/jammy64).
 
-- Network Configuration:-
+- Define Network Settings:-
 The forwarded port allows the web application to be accessed on localhost
 
-- Provisioner: -
+- Provisioning using Ansible:-
 Uses Ansible to automatically configure the VM by running the playbook.yaml file after provisioning.
 
 # Provisioning Process
@@ -54,40 +54,101 @@ vagrant provision
 - Sets up the required environment  ie installing Docker, cloning the GitHub repository, configuring roles
 - If any updates are made to the playbook or roles, the provisioning process can be re-run using:
 
-vagrant provision --reload
+  vagrant provision --reload
 
 # Accessing the Application
 
 - Once provisioning is successful:
 
-- The web application can be accessed via the browser at:
+- I was able to access the application on brower and add products.
 http://localhost:5000 //backend
 http://localhost:3000  //frontend
+
+# Image
+![alt text](<Screenshot from 2025-10-27 20-51-24.png>)
 
 # The VM can be accessed  using:
 vagrant ssh
 
 # Linking Vagrant to Ansible
 
-- The Vagrantfile is configured to trigger Ansible automatically as part of the provisioning process. 
+- Configured Vagrantfile to trigger Ansible automatically as part of the provisioning process. 
 - This ensures that once the virtual machine is up, Ansible takes over to configure the system using predefined roles and tasks.
-- Each role (system-setup, clone-repo, deploy) handles a specific part of the automation:
+- The roles defined (system-setup, clone-repo, deploy) each handles a specific part of the automation:
 
 # system-setup  Role
+- Sets up the environment for Virtual machine
+
+- name: Update apt and install Git & Docker
+  apt:
+    name:
+      - git
+      - docker.io
+      - docker-compose
+    state: present
+    update_cache: yes
+
+- name: Ensure Docker service is running
+  service:
+    name: docker
+    state: started
+    enabled: yes
+
+# Explanation
 - Sets up the required tools like Docker, Git, and Docker-compose
+- Docker allows the application to run inside containers.
+- Docker Compose manages the container application.
+- Git fetches source code from version control repositories (Git hub)
+
+Key Tasks:
+- Update and install Ubuntu system packages.
+- Install Docker, Docker Compose, and Git.
+- Ensure the Docker service is running and enabled on startup.
 
 # clone-repo Role
-- pulls the web application code from the GitHub repository:
-  https://github.com/Joan-Adhiambo/yolo.git
+- clones the project source code from a Git repository into the virtual machine.
+
+- name: Clone YOLO repository
+  git:
+    repo: "{{ repo_url }}"
+    dest: "{{ app_dir }}"
+    force: yes
+
+Key tasks:
+- Ensure Git is installed
+- Clone the repository from the  GitHub URL into the /opt/yolo directory.
+- Verify that the repository was cloned successfully.
 
 # deploy Role
-- sets up and starts the application inside Docker containers.
+- Deploys the application using Docker
 
-This modularization allows for a clean and configuration that is easy to manage.
+- name: Run YOLO app with Docker Compose
+  command: docker-compose up -d
+  args:
+    chdir: "{{ app_dir }}"
+
+Key tasks:
+- Copy or verify that Dockerfile, docker-compose.yaml are in place.
+- Build Docker images as in the configuration.
+- Run Docker Compose to start all containers and since the application is containerized there was no need of installing applications dependencies.
+- Verify the application is up and running.
+
+
 
 # Conclusion
-- The Vagrant configuration ensures an automated and portable development environment. 
-- It serves as the foundation for Ansible to perform further configuration tasks such as dependency installation, container setup, and application        deployment without manual intervention.
+- This modularization allows for a clean and configuration that is easy to manage.
+- The Vagrant configuration ensures an automated and portable development environment also enables Ansible to perform further configuration tasks such as dependency  installation, container setup, and application ,deploying without manual intervention.
+
+
+
+
+
+
+
+
+
+
+
 
 
 ***********************************************************************************************************************************************************
