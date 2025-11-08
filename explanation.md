@@ -1,3 +1,63 @@
+# ORCHESTRATION EXPLANATION
+
+# Choice of Kubernetes Objects
+
+### Database (MongoDB): I used a StatefulSet because it provides:-
+
+- Persistent storage across pod restarts.
+- Ordered deployment and scaling, which is important for stateful applications like databases.
+
+### Backend and Frontend: I used Deployments to ensure:
+
+- Easy scaling via replicas.
+- Rolling updates without downtime.
+- Automatic self-healing of pods if any crashes occur.
+
+### Labels and Annotations:
+- All pods include labels (app) to track frontend, backend, and database pods
+- This makes management and service selection easier.
+
+# Method Used to Expose Pods
+
+### Frontend: Exposed to the internet using a LoadBalancer Service.
+
+- Automatically provisions a public IP address for the frontend.
+- Allows users to access the application directly via the external IP.
+
+### Backend: Exposed internally using a ClusterIP Service
+- Allowing the frontend pods to communicate with it without exposing it to the internet.
+
+### Database: Exposed internally via a headless ClusterIP Service (required by StatefulSet) 
+- For stable networking between pods.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+***********************************************************************************************************************************************************************
+
+
 # Vagrant Implementation
 ## Overview
 
@@ -181,7 +241,7 @@ It is a stable version for most React or Node.js applications.
 Using AS build sets up a multi-stage build, this helped to reduces the final image size.
 
 ## Database (MongoDB)
-I used mvertes/alpine-mongo:latest
+I used mongo:6.0
 
 Reasons:
 It is suitable for test and suitable for final smaller images due to it's lightweight.
@@ -292,6 +352,9 @@ networks:
 # Images pushed on Dockerhub
 
 ![alt text](<Screenshot from 2025-10-11 00-24-41-2.png>)
+
+
+
 
 
 
