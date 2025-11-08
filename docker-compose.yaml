@@ -17,7 +17,7 @@ services:
   
   #database
   app-mongo:
-    image: mvertes/alpine-mongo:latest
+    image: mongo:6.0
     container_name: my-mongo
     ports:
      - "8000:27017"
