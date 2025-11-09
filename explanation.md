@@ -2,6 +2,8 @@
 
 # Choice of Kubernetes Objects
 - For each object I didn't specify namespace, and by default the services,pods,statefulset were created in the default namespace.
+- I have also used Deployment, a Kubernetes controller that ensures the desired number of pods are running.
+- If a pod fails the controller creates a new pod.
 
 ### Database (MongoDB): I used a StatefulSet.
 - Reasons:-
