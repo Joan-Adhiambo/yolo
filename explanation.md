@@ -1,10 +1,11 @@
 # ORCHESTRATION EXPLANATION
 
 # Choice of Kubernetes Objects
+- For each object I didn't specify namespace, and by default the services,pods,statefulset were created in the default namespace.
 
-### Database (MongoDB): I used a StatefulSet because it provides:-
-
-- Persistent storage across pod restarts.
+### Database (MongoDB): I used a StatefulSet.
+- Reasons:-
+- Persistent storage even when pods are deleted. This helps with data consistency and percistence.
 - Ordered deployment and scaling, which is important for stateful applications like databases.
 
 ### Backend and Frontend: I used Deployments to ensure:
@@ -12,6 +13,8 @@
 - Easy scaling via replicas.
 - Rolling updates without downtime.
 - Automatic self-healing of pods if any crashes occur.
+- For backend-service I used clusterIp type so that frontend service could use the virtual IP (cluster IP) to access backend pods
+- Frontend-service  I used LoadBalancer whcich forwards traffic and distrubtes traffic accross the pods.
 
 ### Labels and Annotations:
 - All pods include labels (app) to track frontend, backend, and database pods
@@ -25,17 +28,56 @@
 - Allows users to access the application directly via the external IP.
 
 ### Backend: Exposed internally using a ClusterIP Service
-- Allowing the frontend pods to communicate with it without exposing it to the internet.
+- Allowing the frontend pods to communicate with the ackend service without exposing it to the internet.
+- For successful connection to the Database I ensured the the database configurations in .env and also specified in backend-deployment.yaml.
 
-### Database: Exposed internally via a headless ClusterIP Service (required by StatefulSet) 
+### Use of Ingress Controller
+- I also used backend-ingress controller configured rules, the ingress routed traffic to my backend-service on port 5000.
+- This ensured the backend service is reachabe without exposng it externally.
+### Database: Exposed internally via a headless ClusterIP Service.
 - For stable networking between pods.
 
+# Use of Persistent storage
+- For the database (MongoDB) I created a PersistentVolumeClaim (PVC) and bound it to a PersistentVolume (PV).
+- This is to ensure that data is not lost when Pods are deleted or restarted
+- Scaling the StatefulSet doesn’t affect existing data.
+- To confirm data persistence I deleted the database pods and confirmed the and the added products remained.
 
 
+![
+
+](<Screenshot from 2025-11-09 23-25-05.png>)
 
 
+# Git Workflow
 
+- confirmed the app is running locally
+- Taggedg and pushed images to Docker Hub with proper tags (username/app-name:v1).
+- Kubernetes manifests creation.
+  manifests:-
+      - backend-deloyment.yaml
+      - backend-service.yaml
+      - frontend-deployment.yaml
+      - frontend-service.yaml
+      - mongo-statefulset.yaml
+      - backend-ingress.yaml
+- Added persistent volume setup.
+- Backend ingress controller configuration and deployment testing.
+- Updated documentation (README.md and explanation.md).
+- Used descriptive commit messages to track progress clearly.
 
+# Debbungging and Testing
+- During deployment, I encountered issues such as:
+- CORS errors between frontend and backend (resolved using backend-ingress and enabling cors to be true in rules).
+- Connection refused errors, this one also was resolved by configuring backend-ingress to allow  routing of traffic to backend without exposing it externally.
+- After debugging, the was successfully accessible and was able to add products and confirm data persistence.
+
+# Docker Image Tagging and Naming
+I followed the best practice of tagging Docker images with both version and docker hub name.
+![
+  
+](<Screenshot from 2025-11-09 23-41-22.png>)
+![alt text](<Screenshot from 2025-11-09 23-42-07.png>)
 
 
 
