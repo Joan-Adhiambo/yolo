@@ -1,3 +1,127 @@
+
+# E-commerce Application Deployment on Kubernetes
+
+This repository contains Kubernetes manifests and configurations for deploying ane-commerce application (frontend, backend, and database) on Google Kubernetes Engine (GKE).
+
+## Live Application
+
+ Access Link:
+http://136.119.134.23/  deployed using GKE
+http://192.168.49.2:31000/   deployed locally using minikube
+
+
+# Kubernetes Architecture
+### Components
+- Frontend	Deployment + Service 
+- Backend	Deployment + Service + Ingress	
+- Database	StatefulSet + PVC + Service	MongoDB with persistent volume for data retention
+
+- Requests are sent → GKE LoadBalancer (External Ip)
+- Backend-ingress controller routes request → Backend service.
+- Backend stores/retrieves data from the StatefulSet database.
+
+# Kubernetes Objects Used
+
+- Deployments: frontend and backend services.
+- StatefulSet: For database with persistent storage.
+- Backend-Services: ClusterIP for internal access, Ingress for public access.
+- Frontend-service: Load Balancer which exposes the service externally. The external IP is automatically  provisioned by the GKE 
+- Ingress Controller:with defined origin, cors rules. The Ingres Routes external traffic to backend services.
+- PersistentVolumeClaim: Ensures database persistence and used Headderless cluster for mongo-service
+
+# Structure
+.
+├── manifests/
+│   ├── frontend-deployment.yaml
+│   ├── backend-deployment.yaml
+│   ├── mongo-statefulset.yaml
+│   ├── backend-services.yaml
+|   |-- frontend-service.yaml
+│   ├── backend-ingress.yaml
+├── Docker-compose
+├── explanation.md
+└── README.md
+
+# Deployment Steps
+
+Clone this repository
+
+git clone https://github.com/Joan-Adhiambo/yolo.git
+
+
+Create your namespace (optional)
+
+kubectl create namespace <namespacename>
+
+Create Manifests eg
+- kubectl touch backend-deployment.yaml
+
+Apply manifests
+
+- kubectl apply -f manifests/
+
+
+- Check Pods and Services
+
+    kubectl get pods
+    kubectl get svc
+    kubectl get ingress
+    Kubectl get pvc
+
+
+# Access Application
+- Use the external IP provisoned by GKE
+
+### when deploying locally
+- Get your external IP and open in browser:
+- minikube service <service name>  
+
+# Troubleshooting
+- Check logs of the services to confirm each service is well confgured and also the pods are up and running.
+- CORS Errors: Ensure backend has proper CORS configuration or it is enabled.
+- Connection Refused: use ingress contoller to route traffic to external service
+
+
+# Outcome
+
+- Frontend and backend deployed successfully.
+- Stateful database retains data after Pod deletion.
+- Application accessible via External IP.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+***********************************************************************************************************************************************************************
+
+
 # Configuration Management I– Ansible Automation
 
 This project implements infrastructure automation using Vagrant and Ansible.
