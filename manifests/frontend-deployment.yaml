@@ -19,3 +19,6 @@ spec:
           image: joanodhiambo/yolo-frontend:v1.0.0
           ports:
             - containerPort: 3000
+          env:
+            - name: BACKEND_URL
+              value: 'http://localhost:5000/api/products'
