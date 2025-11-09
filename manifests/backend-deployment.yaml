@@ -19,3 +19,6 @@ spec:
           image: joanodhiambo/yolo-backend:v2.0.0
           ports:
             - containerPort: 5000
+          env:
+            - name: MONGODB_URI
+              value: "mongodb+srv://adhiambojoan83_db_user:7VeIcygADe2yevN5@cluster1.lul9c2s.mongodb.net/?retryWrites=true&w=majority&appName=Cluster1"
