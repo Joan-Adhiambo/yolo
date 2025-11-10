@@ -33,9 +33,7 @@
 - Allowing the frontend pods to communicate with the ackend service without exposing it to the internet.
 - For successful connection to the Database I ensured the the database configurations in .env and also specified in backend-deployment.yaml.
 
-### Use of Ingress Controller
-- I also used backend-ingress controller configured rules, the ingress routed traffic to my backend-service on port 5000.
-- This ensured the backend service is reachabe without exposng it externally.
+
 ### Database: Exposed internally via a headless ClusterIP Service.
 - For stable networking between pods.
 
@@ -47,7 +45,7 @@
 
 
 ![
-
+  
 ](<Screenshot from 2025-11-09 23-25-05.png>)
 
 
@@ -62,16 +60,13 @@
       - frontend-deployment.yaml
       - frontend-service.yaml
       - mongo-statefulset.yaml
-      - backend-ingress.yaml
 - Added persistent volume setup.
-- Backend ingress controller configuration and deployment testing.
 - Updated documentation (README.md and explanation.md).
 - Used descriptive commit messages to track progress clearly.
 
 # Debbungging and Testing
 - During deployment, I encountered issues such as:
-- CORS errors between frontend and backend (resolved using backend-ingress and enabling cors to be true in rules).
-- Connection refused errors, this one also was resolved by configuring backend-ingress to allow  routing of traffic to backend without exposing it externally.
+- Connection refused errors, this one also was resolved by using port forwading.
 - After debugging, the was successfully accessible and was able to add products and confirm data persistence.
 
 # Docker Image Tagging and Naming
