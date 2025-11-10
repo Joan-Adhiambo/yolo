@@ -21,4 +21,4 @@ spec:
             - containerPort: 3000
           env:
             - name: BACKEND_URL
-              value: 'http://backend-app:5000/api/products'
+              value: 'http://localhost:5000/api/products'
