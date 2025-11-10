@@ -13,20 +13,18 @@ http://192.168.49.2:31000/   deployed locally using minikube
 # Kubernetes Architecture
 ### Components
 - Frontend	Deployment + Service 
-- Backend	Deployment + Service + Ingress	
+- Backend	Deployment + Service 
 - Database	StatefulSet + PVC + Service	MongoDB with persistent volume for data retention
 
 - Requests are sent → GKE LoadBalancer (External Ip)
-- Backend-ingress controller routes request → Backend service.
 - Backend stores/retrieves data from the StatefulSet database.
 
 # Kubernetes Objects Used
 
 - Deployments: frontend and backend services.
 - StatefulSet: For database with persistent storage.
-- Backend-Services: ClusterIP for internal access, Ingress for public access.
+- Backend-Services: ClusterIP for internal access.
 - Frontend-service: Load Balancer which exposes the service externally. The external IP is automatically  provisioned by the GKE 
-- Ingress Controller:with defined origin, cors rules. The Ingres Routes external traffic to backend services.
 - PersistentVolumeClaim: Ensures database persistence and used Headderless cluster for mongo-service
 
 # Structure
@@ -37,7 +35,6 @@ http://192.168.49.2:31000/   deployed locally using minikube
 │   ├── mongo-statefulset.yaml
 │   ├── backend-services.yaml
 |   |-- frontend-service.yaml
-│   ├── backend-ingress.yaml
 ├── Docker-compose
 ├── explanation.md
 └── README.md
@@ -65,7 +62,6 @@ Apply manifests
 
     kubectl get pods
     kubectl get svc
-    kubectl get ingress
     Kubectl get pvc
 
 
@@ -78,8 +74,7 @@ Apply manifests
 
 # Troubleshooting
 - Check logs of the services to confirm each service is well confgured and also the pods are up and running.
-- CORS Errors: Ensure backend has proper CORS configuration or it is enabled.
-- Connection Refused: use ingress contoller to route traffic to external service
+- Connection Refused: useed port forwarding to add products.
 
 
 # Outcome
